@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const supportRoutes = require('./routes/support');
@@ -51,6 +52,17 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static file serving for uploaded evidence
 app.use('/uploads', express.static('uploads'));
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Serve index.html for root route (SPA support)
+app.get('*', (req, res) => {
+  // Only serve index.html for non-API routes
+  if (!req.url.startsWith('/api/')) {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  }
+});
 
 // Health check endpoint
 app.get('/', (req, res) => {
