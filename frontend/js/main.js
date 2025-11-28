@@ -3,7 +3,7 @@ class SafeCircleApp {
     constructor() {
         this.currentSection = 'home';
         this.uploadedFiles = [];
-        this.apiBaseUrl = 'http://localhost:8000'; // Backend URL
+        this.apiBaseUrl = 'http://localhost:3000'; // Backend URL
         this.isDarkMode = localStorage.getItem('darkMode') === 'true';
         this.notifications = [];
         
@@ -298,7 +298,7 @@ class SafeCircleApp {
         this.announceToScreenReader('Submitting support request...');
 
         try {
-            const response = await fetch(`${this.apiBaseUrl}/support-request`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/support/support-request`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -595,7 +595,7 @@ class SafeCircleApp {
         this.showLoading(true);
 
         try {
-            const response = await fetch(`${this.apiBaseUrl}/support-request`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/support/support-request`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -631,7 +631,7 @@ class SafeCircleApp {
                 formData.append('files', item.file);
             });
 
-            const response = await fetch(`${this.apiBaseUrl}/upload-evidence`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/evidence/upload-evidence`, {
                 method: 'POST',
                 body: formData
             });
