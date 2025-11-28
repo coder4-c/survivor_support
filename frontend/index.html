@@ -39,6 +39,13 @@
                 <a href="#emergency" class="nav-link" data-section="emergency" role="menuitem" tabindex="-1">
                     <i class="fas fa-phone" aria-hidden="true"></i> Emergency
                 </a>
+                <a href="#dashboard" class="nav-link" data-section="dashboard" role="menuitem" tabindex="-1">
+                    <i class="fas fa-tachometer-alt" aria-hidden="true"></i> Dashboard
+                </a>
+                <button class="notification-btn" id="notificationBtn" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
                 <span aria-hidden="true"></span>
@@ -289,6 +296,77 @@
                 </div>
             </div>
         </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Your Dashboard</h2>
+                    <p>Track your support requests and manage your account</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Support Requests</h3>
+                        <div class="dashboard-stat">3</div>
+                        <p class="dashboard-description">Active support requests</p>
+                        <button class="btn btn-primary" data-section="support">View Details</button>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h3>Evidence Files</h3>
+                        <div class="dashboard-stat">7</div>
+                        <p class="dashboard-description">Securely stored files</p>
+                        <button class="btn btn-primary" data-section="evidence">Manage Files</button>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h3>Session Status</h3>
+                        <div class="badge badge-success">Active</div>
+                        <p class="dashboard-description">Next session: Tomorrow 2:00 PM</p>
+                        <button class="btn btn-secondary">Reschedule</button>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <h3><i class="fas fa-user"></i> Profile Information</h3>
+                    <form class="form-modern">
+                        <div class="form-row">
+                            <div class="form-field">
+                                <input type="text" id="profileName" placeholder=" " value="Anonymous User">
+                                <label for="profileName">Display Name</label>
+                            </div>
+                            <div class="form-field">
+                                <input type="email" id="profileEmail" placeholder=" ">
+                                <label for="profileEmail">Email Address</label>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <textarea id="profileBio" rows="3" placeholder=" "></textarea>
+                            <label for="profileBio">About You (Optional)</label>
+                        </div>
+                        <div class="form-field">
+                            <label class="checkbox-modern">
+                                <input type="checkbox" id="notificationsEnabled" checked>
+                                <span class="checkmark"></span>
+                                Enable email notifications
+                            </label>
+                        </div>
+                        <div class="form-field">
+                            <label class="checkbox-modern">
+                                <input type="checkbox" id="anonymousMode" checked>
+                                <span class="checkmark"></span>
+                                Keep my identity anonymous
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Update Profile
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -329,6 +407,84 @@
             <p>Processing your request...</p>
         </div>
     </div>
+
+    <!-- Notification Center -->
+    <div class="notification-center" id="notificationCenter">
+        <div class="notification-header">
+            <h4>Notifications</h4>
+            <button class="notification-close" id="notificationClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <div class="notification-item unread">
+                <i class="fas fa-check-circle text-success"></i>
+                <div>
+                    <strong>Support Request Updated</strong>
+                    <p>Your counseling request has been assigned to a specialist.</p>
+                    <small>2 hours ago</small>
+                </div>
+            </div>
+            <div class="notification-item">
+                <i class="fas fa-lock text-primary"></i>
+                <div>
+                    <strong>Files Secured</strong>
+                    <p>Your evidence files have been encrypted and stored securely.</p>
+                    <small>1 day ago</small>
+                </div>
+            </div>
+            <div class="notification-item">
+                <i class="fas fa-calendar text-info"></i>
+                <div>
+                    <strong>Session Reminder</strong>
+                    <p>You have a support session scheduled for tomorrow at 2:00 PM.</p>
+                    <small>2 days ago</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-backdrop" id="confirmationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Confirm Action</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Are you sure you want to perform this action?</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+                    <button class="btn btn-primary" id="modalConfirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Upload Progress Modal -->
+    <div class="modal-backdrop" id="uploadModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-cloud-upload-alt"></i> Uploading Files</h3>
+            </div>
+            <div class="modal-body">
+                <div class="progress-container">
+                    <div class="progress-bar-container">
+                        <div class="progress-fill" id="uploadProgress" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="uploadProgressText">Preparing upload...</div>
+                </div>
+                <div id="uploadFilesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="fabButton" aria-label="Quick Actions">
+        <i class="fas fa-plus"></i>
+    </button>
 
     <script src="js/main.js"></script>
 </body>
