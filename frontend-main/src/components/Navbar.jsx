@@ -40,7 +40,7 @@ const Navbar = () => {
         initialNotifications = [
           {
             id: 'welcome',
-            title: 'Welcome to Safe Circle! 💜',
+            title: 'Welcome to Salama! 💜',
             message: `Dear ${user.username}, we're so honored that you've chosen to trust us with your journey. You're not alone - we're here to support you every step of the way.`,
             time: 'Just now',
             unread: true,
@@ -248,9 +248,14 @@ const Navbar = () => {
               <div className="h-10 sm:h-12 w-10 sm:w-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Shield className="h-6 sm:h-7 w-6 sm:w-7 text-white" />
               </div>
-              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                Safe Circle
-              </span>
+              <div className="flex flex-col">
+                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Salama
+                </span>
+                <span className="text-xs sm:text-sm text-purple-500 font-medium hidden sm:block">
+                  Secure Support Platform
+                </span>
+              </div>
             </Link>
           </div>
 
@@ -370,7 +375,7 @@ const Navbar = () => {
                   {notifications.length > 0 && (
                     <div className="p-3 border-t border-gray-200 bg-gray-50">
                       <p className="text-xs text-gray-500 text-center">
-                        💜 Safe Circle - Supporting your journey with care
+                        💜 Salama - Supporting your journey with care
                       </p>
                     </div>
                   )}

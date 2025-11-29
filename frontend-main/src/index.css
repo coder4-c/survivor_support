@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
+/* Custom CSS Variables for Salama */
+=======
 /* Custom CSS Variables for Safe Circle */
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 :root {
   --primary-50: #f0f9ff;
   --primary-100: #e0f2fe;
@@ -83,6 +87,8 @@ body {
   }
 }
 
+<<<<<<< HEAD
+=======
 /* AI Chatbot Animations */
 @keyframes gradient-foreground-1 {
   from,
@@ -232,6 +238,7 @@ body {
   content: attr(data-content);
 }
 
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 /* Print styles */
 @media print {
   .no-print {

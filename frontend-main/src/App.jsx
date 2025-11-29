@@ -12,8 +12,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Preferences from './components/Preferences';
 import { Chatbot } from './components/Chatbot';
 import { Button } from './components/ui/button';
+import { Heart, Shield } from 'lucide-react';
 
-// Login/Signup Form Component
+// Login/Signup Form Component with enhanced Salama branding
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -138,7 +139,7 @@ const AuthForm = () => {
             onClick={() => setShowPreferences(false)}
             className="text-white hover:text-purple-200"
           >
-            ← Back to Login
+            ← Back to Salama Login
           </Button>
           <Preferences />
         </div>
@@ -150,25 +151,26 @@ const AuthForm = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6">
         <div>
-          <div className="mx-auto h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-xl">
-            <svg className="h-10 w-10 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
+          <div className="mx-auto h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-xl mb-6">
+            <Heart className="h-10 w-10 text-purple-600" />
           </div>
           <h2 className="mt-6 text-center text-3xl sm:text-4xl font-bold text-white">
-            {isLogin ? t('welcome') + '!' : t('createNewAccount')}
+            {isLogin ? 'Welcome to Salama!' : 'Join Salama Community'}
           </h2>
           <p className="mt-2 text-center text-base sm:text-lg text-purple-100">
-            {isLogin ? t('signInToAccount') : t('createNewAccount')}
+            {isLogin ? 'Sign in to your secure support platform' : 'Create your secure support account'}
           </p>
           <p className="mt-4 text-center text-sm text-purple-200">
-            {isLogin ? t('dontHaveAccount') : t('alreadyHaveAccount')} 
+            💜 Salama - Where your safety and wellbeing come first
+          </p>
+          <p className="mt-2 text-center text-sm text-purple-200">
+            {isLogin ? "Don't have an account?" : 'Already have an account?'} 
             <button
               type="button"
               onClick={() => setIsLogin(!isLogin)}
               className="font-bold text-white hover:text-purple-200 underline underline-offset-2"
             >
-              {isLogin ? t('signUpHere') : t('signInHere')}
+              {isLogin ? 'Sign up here' : 'Sign in here'}
             </button>
           </p>
         </div>
@@ -336,7 +338,7 @@ const AuthForm = () => {
                     {t('loading')}...
                   </div>
                 ) : (
-                  isLogin ? t('login') : t('signup')
+                  isLogin ? 'Sign in to Salama' : 'Join Salama Community'
                 )}
               </button>
             </div>
@@ -357,10 +359,18 @@ const AuthForm = () => {
                 • Email: Must be a valid Gmail address (ending with @gmail.com)<br />
                 • Password: 8+ characters, 1 uppercase letter, 1 number<br />
                 • Account data stored securely in database<br />
-                1. First-time users: Create account → 2. Returning users: Sign in
+                💜 Salama ensures your privacy and security
               </p>
             </div>
           </form>
+        </div>
+        
+        {/* Salama Security Badge */}
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-2 text-purple-200 text-sm">
+            <Shield className="h-4 w-4" />
+            <span>Secured by Salama • Your data is protected</span>
+          </div>
         </div>
       </div>
     </div>
@@ -373,8 +383,14 @@ const AppContent = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50">
+        <div className="text-center">
+          <div className="mx-auto h-16 w-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl mb-6 animate-pulse">
+            <Heart className="h-8 w-8 text-white" />
+          </div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-purple-600 text-lg font-semibold">Loading Salama...</p>
+        </div>
       </div>
     );
   }

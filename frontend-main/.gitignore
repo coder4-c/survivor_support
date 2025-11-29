@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+.env.local
+
+=======
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 # Logs
 logs
 *.log
@@ -7,6 +16,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+<<<<<<< HEAD
+# Dependencies
+=======
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 node_modules
 dist
 dist-ssr

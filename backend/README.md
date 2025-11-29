@@ -1,6 +1,6 @@
-# Safe Circle Backend
+# Salama Backend
 
-A Node.js/Express/MongoDB backend for the Safe Circle survivor support application with secure evidence management.
+A Node.js/Express/MongoDB backend for the Salama survivor support application with secure evidence management.
 
 ## Features
 
@@ -276,7 +276,7 @@ curl -X POST http://localhost:3000/api/support/support-request \
 
 ## License
 
-This project is part of the Safe Circle application. All rights reserved.
+This project is part of the Salama application. All rights reserved.
 
 ## Support
 

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+# Salama Backend Security Configuration
+=======
 # Safe Circle Backend Security Configuration
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 
 ## 🔐 Environment Variables Security
 

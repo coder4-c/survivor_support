@@ -61,7 +61,7 @@ app.use('/uploads', express.static('uploads'));
 // Health check endpoint
 app.get('/', (req, res) => {
   res.json({
-    message: 'Safe Circle backend is running!',
+    message: 'Salama backend is running!',
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     docs: '/docs',
@@ -137,7 +137,7 @@ const startServer = async () => {
     await connectDB();
 
     app.listen(PORT, () => {
-      console.log(`🚀 Safe Circle Backend running on port ${PORT}`);
+      console.log(`🚀 Salama Backend running on port ${PORT}`);
       console.log(`📋 API Documentation: http://localhost:${PORT}`);
       console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
