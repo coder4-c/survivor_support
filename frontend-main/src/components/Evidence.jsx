@@ -85,7 +85,7 @@ const Evidence = () => {
 
       setUploadProgress({ uploading: true, progress: 0 });
 
-      const response = await fetch(`${API_BASE_URL}/api/evidence/upload-evidence`, {
+      const response = await fetch(`${API_BASE_URL.replace(/\/$/, '')}/api/evidence/upload-evidence`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -164,7 +164,7 @@ const Evidence = () => {
 
       // For demo purposes, open download in new tab
       if (file.uploadToken) {
-        const downloadUrl = `${API_BASE_URL}/api/evidence/download/${file.uploadToken}`;
+        const downloadUrl = `${API_BASE_URL.replace(/\/$/, '')}/api/evidence/download/${file.uploadToken}`;
         window.open(downloadUrl, '_blank');
       } else {
         toast.error('File access token not available');
@@ -183,7 +183,7 @@ const Evidence = () => {
       }
 
       if (file.uploadToken) {
-        const downloadUrl = `${API_BASE_URL}/api/evidence/download/${file.uploadToken}`;
+        const downloadUrl = `${API_BASE_URL.replace(/\/$/, '')}/api/evidence/download/${file.uploadToken}`;
         
         // Create a temporary link to trigger download
         const link = document.createElement('a');
