@@ -88,14 +88,13 @@ export function Chatbot() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 py-8 px-4">
-      <div className="w-full max-w-4xl mx-auto">
+    <div className="fixed bottom-6 right-6 z-50">
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative mx-auto w-full items-center justify-center overflow-hidden rounded-lg border bg-background"
+        className="relative w-80 md:w-96 h-[500px] overflow-hidden rounded-lg border bg-background shadow-lg"
       >
-        <div className="relative flex w-full items-center justify-center p-4">
+        <div className="relative flex flex-col h-full">
           <AnimatePresence>
             {hovered && (
               <motion.div
@@ -118,43 +117,45 @@ export function Chatbot() {
             )}
           </AnimatePresence>
           
-          <div className="z-20 w-full">
-            <div className="text-center mb-4">
-              <h1 className="flex justify-center select-none py-2 text-center text-2xl font-extrabold leading-none tracking-tight md:text-2xl lg:text-4xl">
+          <div className="z-20 flex flex-col h-full">
+            {/* Header */}
+            <div className="p-4 border-b bg-background/80 backdrop-blur-sm">
+              <h1 className="text-lg font-bold text-center">
                 <span
                   data-content="AI."
-                  className="before:animate-gradient-background-1 relative before:absolute before:bottom-4 before:left-0 before:top-0 before:z-0 before:w-full before:px-2 before:content-[attr(data-content)] sm:before:top-0"
+                  className="before:animate-gradient-background-1 relative before:absolute before:bottom-1 before:left-0 before:top-0 before:z-0 before:w-full before:px-1 before:content-[attr(data-content)]"
                 >
-                  <span className="from-gradient-1-start to-gradient-1-end animate-gradient-foreground-1 bg-gradient-to-r bg-clip-text px-2 text-transparent">
+                  <span className="from-gradient-1-start to-gradient-1-end animate-gradient-foreground-1 bg-gradient-to-r bg-clip-text px-1 text-transparent">
                     AI.
                   </span>
                 </span>
                 <span
                   data-content="Chat."
-                  className="before:animate-gradient-background-2 relative before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:w-full before:px-2 before:content-[attr(data-content)] sm:before:top-0"
+                  className="before:animate-gradient-background-2 relative before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:w-full before:px-1 before:content-[attr(data-content)]"
                 >
-                  <span className="from-gradient-2-start to-gradient-2-end animate-gradient-foreground-2 bg-gradient-to-r bg-clip-text px-2 text-transparent">
+                  <span className="from-gradient-2-start to-gradient-2-end animate-gradient-foreground-2 bg-gradient-to-r bg-clip-text px-1 text-transparent">
                     Chat.
                   </span>
                 </span>
                 <span
                   data-content="Support."
-                  className="before:animate-gradient-background-3 relative before:absolute before:bottom-1 before:left-0 before:top-0 before:z-0 before:w-full before:px-2 before:content-[attr(data-content)] sm:before:top-0"
+                  className="before:animate-gradient-background-3 relative before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:w-full before:px-1 before:content-[attr(data-content)]"
                 >
-                  <span className="from-gradient-3-start to-gradient-3-end animate-gradient-foreground-3 bg-gradient-to-r bg-clip-text px-2 text-transparent">
+                  <span className="from-gradient-3-start to-gradient-3-end animate-gradient-foreground-3 bg-gradient-to-r bg-clip-text px-1 text-transparent">
                     Support.
                   </span>
                 </span>
               </h1>
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-xs text-muted-foreground text-center mt-1">
                 How can I help you today?
               </p>
             </div>
 
-            <ScrollArea className="h-[360px] w-full overflow-auto p-1" ref={scrollRef}>
-              <div className="px-6 space-y-4">
+            {/* Messages */}
+            <ScrollArea className="flex-1 p-2" ref={scrollRef}>
+              <div className="space-y-3 px-2">
                 {messages.length === 0 ? (
-                  <div className="text-center text-muted-foreground py-8">
+                  <div className="text-center text-muted-foreground py-8 text-sm">
                     Start a conversation by typing a message below.
                   </div>
                 ) : (
@@ -168,14 +169,14 @@ export function Chatbot() {
                     >
                       <div
                         className={cn(
-                          "max-w-[80%] rounded-lg px-4 py-2",
+                          "max-w-[85%] rounded-lg px-3 py-2 text-xs",
                           message.type === "user"
                             ? "bg-primary text-primary-foreground"
                             : "bg-muted text-foreground"
                         )}
                       >
-                        <p className="text-sm">{message.text}</p>
-                        <span className="text-xs opacity-70 mt-1 block">
+                        <p className="text-xs leading-relaxed">{message.text}</p>
+                        <span className="text-[10px] opacity-70 mt-1 block">
                           {message.timestamp.toLocaleTimeString()}
                         </span>
                       </div>
@@ -184,11 +185,11 @@ export function Chatbot() {
                 )}
                 {loading && (
                   <div className="flex justify-start">
-                    <div className="bg-muted text-foreground max-w-[80%] rounded-lg px-4 py-2">
+                    <div className="bg-muted text-foreground max-w-[85%] rounded-lg px-3 py-2">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                        <div className="w-1.5 h-1.5 bg-current rounded-full animate-bounce"></div>
+                        <div className="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                        <div className="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                       </div>
                     </div>
                   </div>
@@ -196,45 +197,45 @@ export function Chatbot() {
               </div>
             </ScrollArea>
 
-            <div className="relative mt-4 w-full">
+            {/* Input */}
+            <div className="p-3 border-t bg-background/80 backdrop-blur-sm">
               <form onSubmit={sendMessage}>
                 <div className="relative">
                   <Input
-                    className="pl-12 pr-12"
+                    className="pl-10 pr-16 text-xs h-8"
                     placeholder="Ask something with AI"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     disabled={loading}
                   />
+                  
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute left-0.5 top-0.5 h-7 w-7 rounded-sm"
+                    onClick={clearChat}
+                    type="button"
+                  >
+                    <Plus className="h-3 w-3" />
+                    <span className="sr-only">New Chat</span>
+                  </Button>
+
+                  <Button
+                    type="submit"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-0.5 top-0.5 h-7 w-7 rounded-sm"
+                    onClick={sendMessage}
+                    disabled={loading || !input.trim()}
+                  >
+                    <Send className="h-3 w-3" />
+                    <span className="sr-only">Send Message</span>
+                  </Button>
                 </div>
               </form>
-
-              <Button
-                variant="default"
-                size="icon"
-                className="absolute left-1.5 top-1.5 h-7 w-7 rounded-sm"
-                onClick={clearChat}
-                type="button"
-              >
-                <Plus className="h-4 w-4" />
-                <span className="sr-only">New Chat</span>
-              </Button>
-
-              <Button
-                type="submit"
-                variant="default"
-                size="icon"
-                className="absolute right-1.5 top-1.5 h-7 w-7 rounded-sm"
-                onClick={sendMessage}
-                disabled={loading || !input.trim()}
-              >
-                <Send className="h-4 w-4" />
-                <span className="sr-only">Send Message</span>
-              </Button>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );
