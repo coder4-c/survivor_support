@@ -36,6 +36,11 @@ export function Chatbot() {
 
     try {
       const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
       const response = await fetch(`${API_BASE_URL.replace(/\/$/, '')}/api/ai/chat`, {
         method: 'POST',
         headers: {
@@ -48,8 +53,11 @@ export function Chatbot() {
             text: m.text,
             type: m.type === "user" ? "Human" : "AI"
           }))
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -57,30 +65,38 @@ export function Chatbot() {
 
       const data = await response.json();
       
-      const aiMessage = { 
-        text: data.response || "I received your message but couldn't generate a response.", 
-        type: "ai", 
-        timestamp: new Date() 
-      };
-      setMessages(prev => [...prev, aiMessage]);
+      // Small delay to make the AI response feel more natural
+      setTimeout(() => {
+        const aiMessage = { 
+          text: data.response || "I received your message but couldn't generate a response.", 
+          type: "ai", 
+          timestamp: new Date() 
+        };
+        setMessages(prev => [...prev, aiMessage]);
+        setLoading(false);
+      }, 500); // 500ms delay for better UX
+      
     } catch (error) {
       console.error('Chat error:', error);
-      let errorText = "Sorry, I'm having trouble connecting right now. Please try again.";
+      let errorText = "I'm here to support you. Please try again or contact our support team directly.";
       
-      if (error.message.includes('404')) {
-        errorText = "AI service is currently unavailable. Please check that the backend server is running.";
+      if (error.name === 'AbortError') {
+        errorText = "Response is taking longer than expected. I'm still here to help!";
+      } else if (error.message.includes('404')) {
+        errorText = "I'm having trouble connecting right now, but our support team is available 24/7.";
       } else if (error.message.includes('Failed to fetch')) {
-        errorText = "Unable to connect to the server. Please check your connection.";
+        errorText = "Connection issue detected. Please check your internet connection.";
       }
       
-      const errorMessage = { 
-        text: errorText, 
-        type: "ai", 
-        timestamp: new Date() 
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setLoading(false);
+      setTimeout(() => {
+        const errorMessage = { 
+          text: errorText, 
+          type: "ai", 
+          timestamp: new Date() 
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        setLoading(false);
+      }, 300);
     }
   };
 
@@ -191,10 +207,13 @@ export function Chatbot() {
                     {loading && (
                       <div className="flex justify-start">
                         <div className="bg-blue-800 text-white max-w-[85%] rounded-lg px-2 py-1">
-                          <div className="flex space-x-1">
-                            <div className="w-1 h-1 bg-white rounded-full animate-bounce"></div>
-                            <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                            <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          <div className="flex items-center space-x-1">
+                            <div className="flex space-x-1">
+                              <div className="w-1 h-1 bg-white rounded-full animate-bounce"></div>
+                              <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                              <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                            </div>
+                            <span className="text-[10px] opacity-70">Typing...</span>
                           </div>
                         </div>
                       </div>
