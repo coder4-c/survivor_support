@@ -13,7 +13,9 @@ import {
   CheckCircle,
   AlertCircle,
   MessageCircle,
-  Calendar
+  Calendar,
+  Heart,
+  Star
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -129,7 +131,7 @@ const Dashboard = () => {
             <Shield className="h-10 w-10 text-white" />
           </div>
           <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-purple-600 text-lg font-semibold">Loading your dashboard...</p>
+          <p className="text-purple-600 text-lg font-semibold">Loading your Salama dashboard...</p>
         </div>
       </div>
     );
@@ -139,32 +141,32 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Welcome section */}
+      {/* Welcome section with enhanced Salama branding */}
       <div className="text-center space-y-4 sm:space-y-6 pt-8 sm:pt-12 pb-6 sm:pb-8 px-4">
         <div className="mx-auto h-16 sm:h-20 w-16 sm:w-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl">
-          <Shield className="h-8 sm:h-10 w-8 sm:w-10 text-white" />
+          <Heart className="h-8 sm:h-10 w-8 sm:w-10 text-white" />
         </div>
         <div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Welcome back, {displayName}! 👋
+            Welcome to Salama, {displayName}! 👋
           </h1>
           {isNewUser ? (
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
-<<<<<<< HEAD
-              👋 We're so happy to have you join Salama! This is your secure support platform. 
-=======
-              👋 We're so happy to have you join Safe Circle! This is your secure support platform. 
->>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
-              Start by reporting your first case or getting the help you need.
+              🌟 We're so honored to have you join Salama! This is your secure support platform designed with care and compassion. 
+              Start your journey by reporting your first case or getting the help you need - you're not alone.
             </p>
           ) : (
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
-              We're so happy to see you again! Your secure support platform is ready with all your personalized resources.
+              💜 Welcome back to Salama! Your secure support platform is ready with all your personalized resources and ongoing support.
             </p>
           )}
-          <div className="mt-4 inline-flex items-center px-3 sm:px-4 py-2 bg-green-100 text-green-800 rounded-full text-xs sm:text-sm font-medium">
-            <CheckCircle className="h-3 sm:h-4 w-3 sm:w-4 mr-2" />
-            You are securely logged in
+          <div className="mt-6 inline-flex items-center px-4 sm:px-6 py-3 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 rounded-full text-sm sm:text-base font-medium shadow-lg">
+            <CheckCircle className="h-4 sm:h-5 w-4 sm:w-5 mr-2" />
+            <span>You are securely logged in to Salama</span>
+          </div>
+          <div className="mt-3 text-sm text-purple-600 font-medium">
+            <Star className="inline h-4 w-4 mr-1" />
+            Salama - Where your safety and wellbeing come first
           </div>
         </div>
       </div>
@@ -203,7 +205,9 @@ const Dashboard = () => {
       {/* Quick actions */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6 sm:pb-8">
         <div className="space-y-4 sm:space-y-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center">Quick Actions</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent text-center">
+            Salama Quick Actions
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {quickActions.map((action, index) => {
               const Icon = action.icon;
@@ -231,7 +235,7 @@ const Dashboard = () => {
                     <CardContent className="text-center">
                       <CardDescription className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6">{action.description}</CardDescription>
                       <div className={`w-full py-2 sm:py-3 px-4 bg-gradient-to-r ${colors[index]} text-white rounded-xl font-semibold text-sm sm:text-base group-hover:shadow-lg transition-all transform group-hover:scale-105`}>
-                        Get Started →
+                        Get Started with Salama →
                       </div>
                     </CardContent>
                   </Link>
@@ -246,7 +250,9 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6 sm:pb-8">
         <div className="space-y-4 sm:space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Recent Activity</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              Your Salama Activity
+            </h2>
             {!isNewUser && (
               <Button variant="outline" size="sm" className="border-purple-200 text-purple-600 hover:bg-purple-50 text-sm">
                 View All
@@ -255,33 +261,34 @@ const Dashboard = () => {
           </div>
           
           {isNewUser ? (
-            <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+            <Card className="bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 border-purple-200">
               <CardContent className="p-6 sm:p-8 text-center">
                 <div className="mx-auto h-16 w-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center mb-4">
-                  <Users className="h-8 w-8 text-white" />
+                  <Heart className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-<<<<<<< HEAD
-                  👋 Welcome to Salama, {displayName}!
-=======
-                  👋 Welcome to Safe Circle, {displayName}!
->>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
+                <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+                  🌟 Welcome to Salama, {displayName}!
                 </h3>
                 <p className="text-gray-600 mb-6 text-base sm:text-lg">
-                  You haven't reported any cases yet. Our platform is here to help you when you need it. 
+                  You haven't reported any cases yet. Salama is here to help you when you need it, with complete privacy and security. 
                   You can start by:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                  <div className="bg-white rounded-xl p-4 shadow-md">
+                  <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow">
                     <FileText className="h-8 w-8 text-purple-600 mx-auto mb-2" />
                     <h4 className="font-semibold text-gray-900 mb-2">Submit a Case</h4>
                     <p className="text-sm text-gray-600">Report your situation to get support</p>
                   </div>
-                  <div className="bg-white rounded-xl p-4 shadow-md">
+                  <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow">
                     <Shield className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                     <h4 className="font-semibold text-gray-900 mb-2">Upload Evidence</h4>
                     <p className="text-sm text-gray-600">Securely store important files</p>
                   </div>
+                </div>
+                <div className="mt-6 p-4 bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl">
+                  <p className="text-sm text-purple-700 font-medium">
+                    💜 Remember: You're brave for reaching out. Salama is here to support you every step of the way.
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -293,7 +300,7 @@ const Dashboard = () => {
                   All caught up!
                 </h3>
                 <p className="text-gray-600">
-                  No recent activity. Your cases are being processed.
+                  No recent activity. Your cases are being processed by the Salama support team.
                 </p>
               </CardContent>
             </Card>
@@ -350,9 +357,9 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Emergency contact banner */}
+      {/* Enhanced Emergency contact banner with Salama branding */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8 sm:pb-12">
-        <Card className="bg-gradient-to-r from-red-500 to-pink-500 border-0 shadow-2xl">
+        <Card className="bg-gradient-to-r from-purple-500 to-blue-600 border-0 shadow-2xl">
           <CardContent className="p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
               <div className="flex items-center space-x-4 text-center sm:text-left">
@@ -361,22 +368,33 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-xl sm:text-2xl">
-                    Need Immediate Help?
+                    Need Immediate Help? 💜
                   </h3>
-                  <p className="text-red-100 text-base sm:text-lg">
-                    Our crisis support team is available 24/7 for immediate assistance
+                  <p className="text-purple-100 text-base sm:text-lg">
+                    Salama's crisis support team is available 24/7 for immediate assistance
                   </p>
                 </div>
               </div>
               <Link to="/emergency" className="flex-shrink-0">
-                <Button className="bg-white text-red-600 hover:bg-red-50 font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto">
+                <Button className="bg-white text-purple-600 hover:bg-purple-50 font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto">
                   <Phone className="h-5 w-5 mr-2" />
-                  Call Now
+                  Call Salama Now
                 </Button>
               </Link>
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Footer with Salama branding */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-2 text-purple-600 font-medium">
+            <Heart className="h-5 w-5 text-purple-500" />
+            <span>Salama - Supporting your journey with care and compassion</span>
+            <Heart className="h-5 w-5 text-purple-500" />
+          </div>
+        </div>
       </div>
     </div>
   );
