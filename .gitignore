@@ -13,7 +13,6 @@
 .env
 .env.*
 !.env.example
-!.env.template
 !.env.local.example
 
 # Configuration files with secrets
