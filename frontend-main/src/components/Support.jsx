@@ -38,6 +38,18 @@ const Support = () => {
     });
   };
 
+  const handleSupportTypeClick = (supportType) => {
+    setFormData({
+      ...formData,
+      type: supportType
+    });
+    // Scroll to form
+    document.getElementById('support-form')?.scrollIntoView({ 
+      behavior: 'smooth' 
+    });
+    toast.success(`${supportTypes.find(t => t.id === supportType)?.label} selected!`);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -79,7 +91,11 @@ const Support = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <CardDescription>Available for all users</CardDescription>
-                <Button variant="outline" className="mt-4 w-full group-hover:bg-primary-50 group-hover:text-primary-600">
+                <Button 
+                  variant="outline" 
+                  className="mt-4 w-full group-hover:bg-primary-50 group-hover:text-primary-600"
+                  onClick={() => handleSupportTypeClick(type.id)}
+                >
                   Request Support
                 </Button>
               </CardContent>
@@ -90,7 +106,7 @@ const Support = () => {
 
       {/* Support form */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card>
+        <Card id="support-form">
           <CardHeader>
             <CardTitle>Submit Support Request</CardTitle>
             <CardDescription>

@@ -35,8 +35,12 @@ const corsOptions = {
   origin: [
     'http://localhost:8080',
     'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:5174',
     'http://127.0.0.1:8080',
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
     process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true,
@@ -54,13 +58,13 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static('uploads'));
 
 // Serve React frontend static files
-app.use(express.static(path.join(__dirname, '../frontend-react/dist')));
+app.use(express.static(path.join(__dirname, '../frontend-main/dist')));
 
 // Serve index.html for root route (SPA support)
 app.get('*', (req, res) => {
   // Only serve index.html for non-API routes
   if (!req.url.startsWith('/api/')) {
-    res.sendFile(path.join(__dirname, '../frontend-react/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend-main/dist/index.html'));
   }
 });
 
