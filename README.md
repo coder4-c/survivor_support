@@ -4,7 +4,7 @@ A comprehensive, secure web platform designed to support survivors of domestic v
 
 ## Development Team:
 Melvin Khakabo - Backend Development,  
-Jepchumba Kipruto - Frontend Development,  
+Marion Kipruto - Frontend Development,  
 Lauryn Mwendwa- Data Science, 
 Vincent Mutwiri - Full Stack Developer, 
 WILBRODAH MAKHANU - Software Engineer
