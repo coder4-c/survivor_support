@@ -1,0 +1,11 @@
+{
+  "name": "survivor-support",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd frontend-main && npm install && npm run build",
+    "start": "cd frontend-main && npm run preview"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
