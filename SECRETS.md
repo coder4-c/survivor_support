@@ -2,7 +2,7 @@
 
 ## ⚠️ CRITICAL SECURITY NOTICE
 
-This document contains **ALL SECRET INFORMATION** found in the Safe Circle project. Treat this file as HIGHLY CONFIDENTIAL and **NEVER commit it to version control**. 
+This document contains **ALL SECRET INFORMATION** found in the Salama project. Treat this file as HIGHLY CONFIDENTIAL and **NEVER commit it to version control**. 
 
 ## 📋 SECURITY CHECKLIST
 

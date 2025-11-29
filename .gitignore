@@ -1,5 +1,5 @@
 # ========================================
-# SAFE CIRCLE PROJECT - COMPREHENSIVE .GITIGNORE
+# SALAMA PROJECT - COMPREHENSIVE .GITIGNORE
 # ========================================
 # This file ensures no sensitive data is committed to version control
 
@@ -284,7 +284,7 @@ owasp-zap/
 # SECURITY NOTE
 # ========================================
 # This .gitignore file is designed to protect sensitive information
-# in the Safe Circle project. Always ensure that:
+# in the Salama project. Always ensure that:
 # 1. No .env files are committed
 # 2. No API keys or tokens are hardcoded
 # 3. No user data or evidence files are committed

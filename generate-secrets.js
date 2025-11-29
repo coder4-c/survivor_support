@@ -3,7 +3,7 @@
 /**
  * 🔐 SECURE SECRET GENERATOR
  * ============================
- * This script generates cryptographically secure secrets for the Safe Circle project.
+ * This script generates cryptographically secure secrets for the Salama project.
  * 
  * Usage:
  *   node generate-secrets.js                    # Generate all secrets
@@ -72,7 +72,7 @@ const secretTypes = {
 function showBanner() {
   console.log(`${colors.cyan}${colors.bright}
 ╔══════════════════════════════════════════════════════════════╗
-║                   🔐 SAFE CIRCLE SECRET GENERATOR            ║
+║                      🔐 SALAMA SECRET GENERATOR              ║
 ║                                                              ║
 ║  Generates cryptographically secure secrets for production  ║
 ║  ⚠️  Never commit actual secrets to version control!         ║
