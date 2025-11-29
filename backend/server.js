@@ -53,14 +53,14 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static file serving for uploaded evidence
 app.use('/uploads', express.static('uploads'));
 
-// Serve frontend static files
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Serve React frontend static files
+app.use(express.static(path.join(__dirname, '../frontend-react/dist')));
 
 // Serve index.html for root route (SPA support)
 app.get('*', (req, res) => {
   // Only serve index.html for non-API routes
   if (!req.url.startsWith('/api/')) {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend-react/dist/index.html'));
   }
 });
 
