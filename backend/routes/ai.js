@@ -4,32 +4,22 @@ const router = express.Router();
 
 // AI Chat endpoint
 router.post('/chat', async (req, res) => {
+  const { message, context = [] } = req.body;
+  
+  if (!message) {
+    return res.status(400).json({ error: 'Message is required' });
+  }
+
+  // Check if Inflection AI is configured
+  if (!process.env.INFLECTION_API_KEY || !process.env.INFLECTION_API_URL) {
+    console.log('Inflection AI not configured, using Gemini fallback');
+    return tryGemini(message, res);
+  }
+
   try {
-    const { message, context = [] } = req.body;
-    
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
-    }
-
-    // Check if Inflection AI is configured
-    if (!process.env.INFLECTION_API_KEY || !process.env.INFLECTION_API_URL) {
-      console.log('Inflection AI not configured, using fallback response');
-      
-      // Provide helpful fallback responses
-      const fallbackResponses = [
-        "I'm here to support you. While our AI service is being set up, please know that you're not alone in this journey.",
-        "Thank you for reaching out. Our support team is available 24/7 if you need immediate assistance.",
-        "I understand you're looking for support. Please consider reaching out to our counselors or using the emergency resources if you need immediate help.",
-        "Your safety and wellbeing are our priority. While I'm getting set up, please don't hesitate to use our other support resources."
-      ];
-      
-      const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-      return res.json({ response: randomResponse });
-    }
-
     // Build context for Inflection AI
     const aiContext = [
-      ...context.slice(-5), // Keep last 5 messages for context
+      ...context.slice(-5),
       { text: message, type: "Human" }
     ];
 
@@ -53,30 +43,57 @@ router.post('/chat', async (req, res) => {
       }
     );
 
-    console.log('Inflection AI response:', response.data);
-
     const aiResponse = response.data.text || 'No response generated';
     res.json({ response: aiResponse });
 
   } catch (error) {
-    console.error('AI API Error:', error.response?.status || error.message);
-    
-    // Provide contextual fallback responses based on user message
-    const userMessage = message.toLowerCase();
-    let fallbackResponse;
-    
-    if (userMessage.includes('hello') || userMessage.includes('hi')) {
-      fallbackResponse = "Hello! I'm here to support you. While our AI service is temporarily unavailable, please know that you're not alone. Our support team is available 24/7 if you need assistance.";
-    } else if (userMessage.includes('help') || userMessage.includes('support')) {
-      fallbackResponse = "I understand you're looking for help. Even though I'm experiencing technical difficulties, there are people ready to support you. Please consider reaching out to our counselors or using our emergency resources.";
-    } else if (userMessage.includes('emergency') || userMessage.includes('crisis')) {
-      fallbackResponse = "If you're in immediate danger, please contact emergency services (911) or our crisis hotline immediately. Your safety is the top priority.";
-    } else {
-      fallbackResponse = "Thank you for reaching out. While I'm having some technical difficulties connecting to our AI service, please know that support is always available. Our counselors are here 24/7 to help you.";
-    }
-    
-    res.json({ response: fallbackResponse });
+    console.error('Inflection AI Error:', error.response?.status || error.message);
+    return tryGemini(message, res);
   }
 });
+
+async function tryGemini(message, res) {
+  if (process.env.GEMINI_API_KEY) {
+    try {
+      console.log('Trying Google Gemini as fallback...');
+      
+      const geminiResponse = await axios.post(
+        `${process.env.GEMINI_API_URL}?key=${process.env.GEMINI_API_KEY}`,
+        {
+          contents: [{
+            parts: [{
+              text: `You are a compassionate AI assistant for a survivor support platform. Respond helpfully and supportively to: ${message}`
+            }]
+          }]
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+          timeout: 15000
+        }
+      );
+      
+      const aiResponse = geminiResponse.data.candidates?.[0]?.content?.parts?.[0]?.text || 'I\'m here to support you.';
+      console.log('Gemini response successful');
+      return res.json({ response: aiResponse });
+      
+    } catch (geminiError) {
+      console.error('Gemini API Error:', geminiError.message);
+    }
+  }
+  
+  // Final fallback
+  const userMessage = message.toLowerCase();
+  let fallbackResponse;
+  
+  if (userMessage.includes('hello') || userMessage.includes('hi')) {
+    fallbackResponse = "Hello! I'm here to support you. Our support team is available 24/7.";
+  } else if (userMessage.includes('help') || userMessage.includes('support')) {
+    fallbackResponse = "I understand you're looking for help. Please consider reaching out to our counselors.";
+  } else {
+    fallbackResponse = "Thank you for reaching out. Support is always available - our counselors are here 24/7.";
+  }
+  
+  res.json({ response: fallbackResponse });
+}
 
 module.exports = router;
