@@ -36,33 +36,27 @@ const Evidence = () => {
         setIsLoading(true);
         const token = localStorage.getItem('token');
         
-        // For now, we'll simulate loading files since we need a user-specific endpoint
         // In a real implementation, you'd have an endpoint like GET /api/evidence/user/:userId
-        const mockFiles = [
-          {
-            id: '1',
-            name: 'incident_report.pdf',
-            type: 'application/pdf',
-            size: 245760,
-            uploadedAt: '2024-01-15T10:30:00Z',
-            status: 'encrypted',
-            uploadToken: 'mock-token-1'
-          },
-          {
-            id: '2', 
-            name: 'evidence_photo.jpg',
-            type: 'image/jpeg',
-            size: 1024768,
-            uploadedAt: '2024-01-14T15:45:00Z',
-            status: 'encrypted',
-            uploadToken: 'mock-token-2'
-          }
-        ];
+        // For now, start with empty state for new users
+        // The files array will remain empty until user uploads something
         
-        setUploadedFiles(mockFiles);
+        // TODO: When backend endpoint is ready, uncomment this:
+        // const response = await fetch(`${API_BASE_URL}/api/evidence/user/${user.id}`, {
+        //   headers: {
+        //     'Authorization': `Bearer ${token}`
+        //   }
+        // });
+        // const data = await response.json();
+        // setUploadedFiles(data.files || []);
+        
+        // For now, start with empty state - new users have no files
+        setUploadedFiles([]);
+        
       } catch (error) {
         console.error('Error loading evidence files:', error);
         toast.error('Failed to load evidence files');
+        // Keep files empty on error to maintain clean state
+        setUploadedFiles([]);
       } finally {
         setIsLoading(false);
       }
@@ -264,7 +258,8 @@ const Evidence = () => {
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-gradient">Secure Evidence Vault</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Upload and securely store important files. All evidence is encrypted and protected.
+          Keep your important documents and memories safe in your personal vault. 
+          Everything is encrypted and only accessible to you.
         </p>
         <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
           <Shield className="h-4 w-4" />
@@ -289,16 +284,16 @@ const Evidence = () => {
             </div>
             <div>
               <h3 className="text-lg font-semibold">
-                {isUploading ? 'Uploading Files...' : 'Upload Evidence Files'}
+                {isUploading ? 'Saving your files...' : 'Add Your Important Files'}
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
                 {isUploading 
-                  ? 'Please wait while your files are being securely uploaded'
+                  ? 'Your files are being safely stored in your personal vault'
                   : 'Drag and drop files here, or click to browse'
                 }
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-                Supported formats: PDF, DOC, DOCX, JPG, PNG, TXT (Max 10MB each)
+                We support: PDF, Word docs, photos, and text files (up to 10MB each)
               </p>
               {uploadProgress.uploading && (
                 <div className="mt-4">
@@ -367,10 +362,10 @@ const Evidence = () => {
             <CardContent className="p-12 text-center">
               <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                No evidence files yet
+                Your secure vault is ready! 💜
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
-                Upload your first file to get started with secure storage.
+                When you're ready, you can upload important documents, photos, or memories to keep them safe.
               </p>
             </CardContent>
           </Card>
@@ -459,18 +454,18 @@ const Evidence = () => {
         </CardContent>
       </Card>
 
-      {/* Warning for sensitive content */}
-      <Card className="bg-yellow-50 dark:bg-yellow-900 border-yellow-200 dark:border-yellow-800">
+      {/* Supportive guidance for file sharing */}
+      <Card className="bg-blue-50 dark:bg-blue-900 border-blue-200 dark:border-blue-800">
         <CardContent className="p-6">
           <div className="flex items-center space-x-3">
-            <AlertTriangle className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+            <Shield className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             <div>
-              <h3 className="font-semibold text-yellow-800 dark:text-yellow-200">
-                Handle with Care
+              <h3 className="font-semibold text-blue-800 dark:text-blue-200">
+                Your Privacy is Protected 💙
               </h3>
-              <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
-                These files may contain sensitive or triggering content. Only share access with trusted 
-                professionals and legal representatives as needed.
+              <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                You're in complete control of your files. When you're ready to share evidence with your 
+                support team, lawyer, or counselor, we'll help you do so safely and securely.
               </p>
             </div>
           </div>
