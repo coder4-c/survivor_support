@@ -10,10 +10,14 @@ A comprehensive, secure web platform designed to support survivors of domestic v
 - **Pitch Deck**: [View Presentation](https://www.canva.com/design/DAG6D9gkEKg/lTORjPxnlj2cK4knWGW1MQ/edit)
 
 ## Development Team:
-Melvin Khakabo - Backend Development,  
-Jepchumba Kipruto - Frontend Development,  
+Melvin Khakabo - Backend Development,
+
+Marion Kipruto - Frontend Development,  
+
 Lauryn Mwendwa- Data Science, 
-Vincent Mutwiri - Full Stack Developer, 
+
+Vincent Mutwiri - Full Stack Developer,
+
 WILBRODAH MAKHANU - Software Engineer
 
 
