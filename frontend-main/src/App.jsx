@@ -423,6 +423,8 @@ const AppContent = () => {
               </ProtectedRoute>
             } />
           </Routes>
+          {/* Global Chatbot - appears on all pages */}
+          <Chatbot />
         </div>
       ) : (
         <AuthForm />
