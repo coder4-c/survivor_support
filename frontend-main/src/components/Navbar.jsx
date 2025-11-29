@@ -390,7 +390,7 @@ const Navbar = () => {
                   Welcome, {displayName}! ✨
                 </div>
                 <div className="text-xs text-purple-600 truncate max-w-24">
-                  {user?.email}
+                  {user?.username}
                 </div>
               </div>
               <Button
@@ -431,7 +431,7 @@ const Navbar = () => {
                     Welcome, {displayName}! ✨
                   </div>
                   <div className="text-xs text-purple-600">
-                    {user?.email}
+                    {user?.username}
                   </div>
                 </div>
               </div>
