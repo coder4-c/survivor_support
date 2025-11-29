@@ -89,7 +89,7 @@ const Emergency = () => {
       distance: '1.2 miles'
     },
     {
-      title: 'Safe Circle Office',
+      title: 'Salama Office',
       description: 'Our local office',
       icon: Users,
       distance: '2.1 miles'

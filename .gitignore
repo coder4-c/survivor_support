@@ -1,0 +1,292 @@
+# ========================================
+# SAFE CIRCLE PROJECT - COMPREHENSIVE .GITIGNORE
+# ========================================
+# This file ensures no sensitive data is committed to version control
+
+# ========================================
+# ENVIRONMENT VARIABLES & SECRETS
+# ========================================
+# ⚠️  CRITICAL: Never commit .env files or any files containing secrets!
+
+# Environment files (all variants)
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.local.example
+
+# Configuration files with secrets
+config/secrets.json
+secrets.json
+secrets.js
+.secrets
+*.secret
+private-key.pem
+*.key
+*.pem
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.p12
+*.pfx
+service-account.json
+credentials.json
+
+# API keys and tokens
+.api-keys
+tokens.json
+access-tokens.json
+
+# ========================================
+# APPLICATION DATA & UPLOADS
+# ========================================
+# User uploaded files and sensitive data
+
+# File uploads (evidence files, documents, images)
+uploads/
+uploads/*
+!uploads/.gitkeep
+!uploads/README.md
+
+# Temporary files
+temp/
+tmp/
+tmp/*
+!tmp/.gitkeep
+
+# Database files and caches
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+database.sql
+database.sqlite
+
+# ========================================
+# LOGS & DEBUG INFORMATION
+# ========================================
+logs/
+logs/*.log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.trace
+
+# ========================================
+# BUILD & DEPENDENCY DIRECTORIES
+# ========================================
+# Dependencies
+node_modules/
+*/node_modules/
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+build/
+.next/
+out/
+.nuxt/
+.vuepress/dist
+
+# Cache directories
+.cache/
+.parcel-cache/
+.eslintcache
+.npm
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ========================================
+# FRONTEND SPECIFIC
+# ========================================
+# Vite/React build outputs
+frontend/dist/
+frontend-main/dist/
+frontend/build/
+*.local
+
+# ========================================
+# BACKEND SPECIFIC
+# ========================================
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage reports
+coverage/
+*.lcov
+.nyc_output/
+
+# ========================================
+# IDE & EDITOR FILES
+# ========================================
+# VSCode
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# IntelliJ IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ========================================
+# OPERATING SYSTEM FILES
+# ========================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+.fseventsd
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ========================================
+# DEVELOPMENT & TESTING
+# ========================================
+# Test coverage
+.coverage
+coverage/
+htmlcov/
+
+# Test artifacts
+.pytest_cache/
+.tox/
+.nox/
+
+# Playwright
+test-results/
+playwright-report/
+
+# ========================================
+# SECURITY & ENCRYPTION
+# ========================================
+# SSL certificates and keys
+*.crt
+*.csr
+*.cer
+*.pem
+*.p7b
+*.p7c
+*.pfx
+
+# Backup files (may contain sensitive data)
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+
+# ========================================
+# MONITORING & ANALYTICS
+# ========================================
+# Firebase
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+
+# Google Cloud
+gcloud/
+.gcloudignore
+
+# ========================================
+# PROJECT SPECIFIC
+# ========================================
+# Backend specific files
+backend/uploads/
+backend/logs/
+backend/temp/
+
+# Frontend specific files
+frontend-main/.env.local
+frontend-main/dist/
+frontend-main/node_modules/
+
+# ========================================
+# SECURITY RESEARCH & DEBUGGING
+# ========================================
+# Security testing files
+burp/
+owasp-zap/
+*.har
+*.harlite
+
+# Memory dumps and core files
+*.dmp
+*.dump
+*.core
+
+# ========================================
+# ARCHIVES & BACKUPS
+# ========================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.tar
+*.tar.bz2
+
+# ========================================
+# MISCELLANEOUS
+# ========================================
+# Package managers
+.pnpm-debug.log*
+.npm
+.eslintcache
+.yarn-integrity
+
+# ========================================
+# SECURITY NOTE
+# ========================================
+# This .gitignore file is designed to protect sensitive information
+# in the Safe Circle project. Always ensure that:
+# 1. No .env files are committed
+# 2. No API keys or tokens are hardcoded
+# 3. No user data or evidence files are committed
+# 4. Secrets are properly managed and rotated regularly
+# 5. Use .env.example files to show required environment variables

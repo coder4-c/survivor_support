@@ -150,7 +150,7 @@ const Dashboard = () => {
           </h1>
           {isNewUser ? (
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
-              👋 We're so happy to have you join Safe Circle! This is your secure support platform. 
+              👋 We're so happy to have you join Salama! This is your secure support platform. 
               Start by reporting your first case or getting the help you need.
             </p>
           ) : (
@@ -257,7 +257,7 @@ const Dashboard = () => {
                   <Users className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                  👋 Welcome to Safe Circle, {displayName}!
+                  👋 Welcome to Salama, {displayName}!
                 </h3>
                 <p className="text-gray-600 mb-6 text-base sm:text-lg">
                   You haven't reported any cases yet. Our platform is here to help you when you need it. 

@@ -1,4 +1,4 @@
-# Safe Circle Backend Security Configuration
+# Salama Backend Security Configuration
 
 ## 🔐 Environment Variables Security
 
