@@ -58,17 +58,6 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static file serving for uploaded evidence
 app.use('/uploads', express.static('uploads'));
 
-// Serve React frontend static files
-app.use(express.static(path.join(__dirname, '../frontend-main/dist')));
-
-// Serve index.html for root route (SPA support)
-app.get('*', (req, res) => {
-  // Only serve index.html for non-API routes
-  if (!req.url.startsWith('/api/')) {
-    res.sendFile(path.join(__dirname, '../frontend-main/dist/index.html'));
-  }
-});
-
 // Health check endpoint
 app.get('/', (req, res) => {
   res.json({
@@ -104,7 +93,7 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use((error, req, res, next) => {
   console.error('Global error handler:', error);
-  
+
   res.status(error.status || 500).json({
     error: error.message || 'Internal server error',
     ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
@@ -115,12 +104,12 @@ app.use((error, req, res, next) => {
 const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/safe_circle';
-    
+
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    
+
     console.log('✅ MongoDB connected successfully');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error.message);
@@ -131,7 +120,7 @@ const connectDB = async () => {
 // Graceful shutdown
 const gracefulShutdown = () => {
   console.log('🔄 Shutting down gracefully...');
-  
+
   mongoose.connection.close(() => {
     console.log('✅ MongoDB connection closed');
     process.exit(0);
@@ -146,7 +135,7 @@ process.on('SIGINT', gracefulShutdown);
 const startServer = async () => {
   try {
     await connectDB();
-    
+
     app.listen(PORT, () => {
       console.log(`🚀 Salama Backend running on port ${PORT}`);
       console.log(`📋 API Documentation: http://localhost:${PORT}`);
