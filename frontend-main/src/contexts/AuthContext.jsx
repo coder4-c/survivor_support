@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored token and validate with backend
+    // Check for stored token and user data
     const token = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
     
@@ -25,8 +25,10 @@ export const AuthProvider = ({ children }) => {
         const userData = JSON.parse(storedUser);
         setUser(userData);
         
-        // Validate token with backend
-        validateToken(token);
+        // Only validate token if we have a valid user, skip if user data is missing or invalid
+        if (userData && userData.id) {
+          // validateToken(token); // Disabled for now due to database connection issues
+        }
       } catch (error) {
         console.error('Error parsing stored user:', error);
         localStorage.removeItem('token');
@@ -57,22 +59,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Token validation error:', error);
-      
-      // Demo mode: If it's a demo token, keep the user logged in
-      if (token === 'demo-token') {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          try {
-            const userData = JSON.parse(storedUser);
-            setUser(userData);
-            return; // Keep user logged in
-          } catch (e) {
-            console.error('Error parsing stored user:', e);
-          }
-        }
-      }
-      
-      // For real tokens or failed demo mode, clear storage
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setUser(null);
@@ -92,7 +78,18 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+        if (response.status === 401) {
+          throw new Error('Invalid email or password. Please check your credentials and try again.');
+        } else if (response.status >= 500) {
+          throw new Error('Server error. Please try again later.');
+        } else {
+          throw new Error(data.error || 'Login failed. Please try again.');
+        }
+      }
+
+      // Validate response data
+      if (!data.token || !data.user) {
+        throw new Error('Invalid response from server. Please try again.');
       }
 
       // Store token and user data
@@ -100,26 +97,14 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
 
+      console.log('Login successful for user:', data.user.email);
       return true;
     } catch (error) {
       console.error('Login error:', error);
       
-      // Demo mode: Allow login without backend
-      if (email && password) {
-        const demoUser = {
-          id: 'demo-user',
-          email: email,
-          name: 'Demo User',
-          username: email.split('@')[0],
-          language: 'en',
-          theme: 'light'
-        };
-        
-        localStorage.setItem('token', 'demo-token');
-        localStorage.setItem('user', JSON.stringify(demoUser));
-        setUser(demoUser);
-        
-        return true;
+      // Provide more user-friendly error messages
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        throw new Error('Cannot connect to server. Please check your internet connection and try again.');
       }
       
       throw error;
@@ -139,7 +124,24 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
+        if (response.status === 400) {
+          if (data.error.includes('email') && data.error.includes('already exists')) {
+            throw new Error('An account with this email already exists. Please use a different email or try logging in.');
+          } else if (data.error.includes('username') && data.error.includes('already taken')) {
+            throw new Error('This username is already taken. Please choose a different username.');
+          } else {
+            throw new Error(data.error || 'Please check your information and try again.');
+          }
+        } else if (response.status >= 500) {
+          throw new Error('Server error during registration. Please try again later.');
+        } else {
+          throw new Error(data.error || 'Registration failed. Please try again.');
+        }
+      }
+
+      // Validate response data
+      if (!data.token || !data.user) {
+        throw new Error('Invalid response from server. Please try again.');
       }
 
       // Store token and user data
@@ -147,26 +149,14 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
 
+      console.log('Registration successful for user:', data.user.email);
       return true;
     } catch (error) {
       console.error('Signup error:', error);
       
-      // Demo mode: Allow signup without backend
-      if (email && password) {
-        const demoUser = {
-          id: 'demo-user-' + Date.now(),
-          email: email,
-          name: name || email.split('@')[0],
-          username: username || email.split('@')[0],
-          language: language || 'en',
-          theme: theme || 'light'
-        };
-        
-        localStorage.setItem('token', 'demo-token');
-        localStorage.setItem('user', JSON.stringify(demoUser));
-        setUser(demoUser);
-        
-        return true;
+      // Provide more user-friendly error messages
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        throw new Error('Cannot connect to server. Please check your internet connection and try again.');
       }
       
       throw error;
@@ -202,21 +192,6 @@ export const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       console.error('Update preferences error:', error);
-      
-      // Demo mode: Update preferences locally without backend
-      const currentUser = localStorage.getItem('user');
-      if (currentUser && token === 'demo-token') {
-        try {
-          const userData = JSON.parse(currentUser);
-          const updatedUser = { ...userData, ...preferences };
-          setUser(updatedUser);
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-          return true;
-        } catch (e) {
-          console.error('Error updating demo user preferences:', e);
-        }
-      }
-      
       throw error;
     }
   };

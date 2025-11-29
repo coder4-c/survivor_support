@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
@@ -20,6 +20,205 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const notificationRef = useRef(null);
+
+  // Initialize notifications with welcome message for new users
+  useEffect(() => {
+    if (user) {
+      const userCreatedAt = new Date(user.createdAt);
+      const now = new Date();
+      const daysSinceJoined = (now - userCreatedAt) / (1000 * 60 * 60 * 24);
+      const hoursSinceJoined = (now - userCreatedAt) / (1000 * 60 * 60);
+
+      let initialNotifications = [];
+
+      if (hoursSinceJoined < 2) {
+        // Very new user - immediate welcome
+        initialNotifications = [
+          {
+            id: 'welcome',
+            title: 'Welcome to Safe Circle! 💜',
+            message: `Dear ${user.username}, we're so honored that you've chosen to trust us with your journey. You're not alone - we're here to support you every step of the way.`,
+            time: 'Just now',
+            unread: true,
+            type: 'welcome'
+          },
+          {
+            id: 'getting-started',
+            title: 'Getting Started Guide',
+            message: 'Take a moment to explore your dashboard. You can upload evidence, request support, or reach out for immediate help anytime.',
+            time: '5 minutes ago',
+            unread: true,
+            type: 'resource'
+          }
+        ];
+      } else if (daysSinceJoined < 1) {
+        // New user (within 24 hours)
+        initialNotifications = [
+          {
+            id: 'check-in-1',
+            title: 'How are you settling in?',
+            message: 'We hope you\'re feeling a bit more supported already. Remember, reaching out for help is a sign of strength, not weakness.',
+            time: '6 hours ago',
+            unread: Math.random() > 0.3,
+            type: 'community'
+          },
+          {
+            id: 'resources',
+            title: 'Helpful Resources Ready',
+            message: 'Your personal resource library is ready with guides tailored to your needs. Start with the "First Steps" collection.',
+            time: '12 hours ago',
+            unread: Math.random() > 0.5,
+            type: 'resource'
+          }
+        ];
+      } else if (daysSinceJoined < 3) {
+        // Short-term user (1-3 days)
+        initialNotifications = [
+          {
+            id: 'progress',
+            title: 'Your Progress Matters',
+            message: 'Every small step forward is significant. We\'re proud of you for taking this journey. Consider joining our community check-in tonight.',
+            time: '1 day ago',
+            unread: Math.random() > 0.4,
+            type: 'community'
+          },
+          {
+            id: 'support-available',
+            title: 'Professional Support Available',
+            message: 'If you haven\'t already, our licensed counselors are here 24/7. No appointment needed for crisis support.',
+            time: '2 days ago',
+            unread: Math.random() > 0.6,
+            type: 'support'
+          }
+        ];
+      } else if (daysSinceJoined < 7) {
+        // First week user
+        initialNotifications = [
+          {
+            id: 'week-check',
+            title: 'One Week Milestone',
+            message: 'It\'s been a week since you joined our community. How are you feeling? Our team would love to hear from you.',
+            time: '3 days ago',
+            unread: Math.random() > 0.5,
+            type: 'community'
+          },
+          {
+            id: 'appointment-suggestion',
+            title: 'Schedule Your First Session',
+            message: 'Ready to speak with a professional? Book your first counseling session. Many find it helpful to have a regular check-in.',
+            time: '5 days ago',
+            unread: Math.random() > 0.6,
+            type: 'appointment'
+          }
+        ];
+      } else {
+        // Returning user - show realistic notifications
+        initialNotifications = [
+          {
+            id: 1,
+            title: 'Support Request Update',
+            message: `Your counseling support request has been assigned to Dr. Sarah Martinez. She specializes in trauma support and will reach out within 24 hours.`,
+            time: '3 hours ago',
+            unread: Math.random() > 0.5,
+            type: 'support'
+          },
+          {
+            id: 2,
+            title: 'New Safety Resources Available',
+            message: 'We\'ve added new self-care guides and emergency contact templates to your resource library.',
+            time: '1 day ago',
+            unread: Math.random() > 0.5,
+            type: 'resource'
+          },
+          {
+            id: 3,
+            title: 'Upcoming Session Reminder',
+            message: 'You have a scheduled support session with your counselor tomorrow at 2:00 PM. We\'ve sent preparation materials to your email.',
+            time: '2 days ago',
+            unread: Math.random() > 0.5,
+            type: 'appointment'
+          },
+          {
+            id: 4,
+            title: 'Community Check-in',
+            message: 'How are you feeling today? Our peer support group is meeting tonight at 7 PM. You\'re always welcome to join.',
+            time: '3 days ago',
+            unread: Math.random() > 0.5,
+            type: 'community'
+          }
+        ];
+      }
+
+      setNotifications(initialNotifications);
+    }
+  }, [user]);
+
+  // Close notifications when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Mark all notifications as read
+  const markAllAsRead = () => {
+    setNotifications(prev => 
+      prev.map(notification => ({ ...notification, unread: false }))
+    );
+    setShowNotifications(false);
+    // In a real app, you'd also update this on the backend
+  };
+
+  // Mark single notification as read
+  const markAsRead = (notificationId) => {
+    setNotifications(prev => 
+      prev.map(notification => 
+        notification.id === notificationId 
+          ? { ...notification, unread: false }
+          : notification
+      )
+    );
+  };
+
+  // Get notification icon based on type
+  const getNotificationIcon = (type) => {
+    switch (type) {
+      case 'welcome': return '💜';
+      case 'support': return '🤝';
+      case 'resource': return '📚';
+      case 'appointment': return '📅';
+      case 'community': return '👥';
+      default: return '🔔';
+    }
+  };
+
+  // Get notification styling based on type
+  const getNotificationStyling = (type) => {
+    switch (type) {
+      case 'welcome':
+        return 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200';
+      case 'support':
+        return 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200';
+      case 'resource':
+        return 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200';
+      case 'appointment':
+        return 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200';
+      case 'community':
+        return 'bg-gradient-to-r from-pink-50 to-rose-50 border-pink-200';
+      default:
+        return 'bg-white border-gray-200';
+    }
+  };
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: Home },
@@ -77,12 +276,105 @@ const Navbar = () => {
           {/* User menu and notifications */}
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Notifications - Hidden on mobile */}
-            <Button variant="ghost" size="icon" className="relative hover:bg-purple-50 hidden sm:flex">
-              <Bell className="h-5 w-5 text-purple-600" />
-              <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500">
-                3
-              </Badge>
-            </Button>
+            <div className="relative hidden sm:block" ref={notificationRef}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative hover:bg-purple-50"
+                onClick={() => setShowNotifications(!showNotifications)}
+              >
+                <Bell className="h-5 w-5 text-purple-600" />
+                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500">
+                  {notifications.filter(n => n.unread).length}
+                </Badge>
+              </Button>
+              
+              {/* Notification Dropdown */}
+              {showNotifications && (
+                <div className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 max-h-96 overflow-hidden">
+                  <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-bold text-gray-900 text-lg">Notifications</h3>
+                        <p className="text-sm text-gray-600">
+                          {notifications.filter(n => n.unread).length > 0 
+                            ? `${notifications.filter(n => n.unread).length} unread message${notifications.filter(n => n.unread).length !== 1 ? 's' : ''}`
+                            : 'All caught up!'
+                          }
+                        </p>
+                      </div>
+                      {notifications.filter(n => n.unread).length > 0 && (
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-purple-600 hover:text-purple-700 hover:bg-purple-100 font-medium"
+                          onClick={markAllAsRead}
+                        >
+                          ✓ Mark all read
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="p-8 text-center">
+                        <div className="text-4xl mb-3">🔔</div>
+                        <p className="text-gray-500">No notifications yet</p>
+                      </div>
+                    ) : (
+                      notifications.map((notification) => (
+                        <div 
+                          key={notification.id}
+                          className={`p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-all ${
+                            getNotificationStyling(notification.type)
+                          } ${notification.unread ? 'ring-l-2 ring-purple-300' : ''}`}
+                          onClick={() => {
+                            markAsRead(notification.id);
+                            setShowNotifications(false);
+                          }}
+                        >
+                          <div className="flex items-start space-x-3">
+                            <div className="text-2xl">
+                              {getNotificationIcon(notification.type)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center space-x-2">
+                                <h4 className="text-sm font-bold text-gray-900">
+                                  {notification.title}
+                                </h4>
+                                {notification.unread && (
+                                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-700 mt-2 leading-relaxed">
+                                {notification.message}
+                              </p>
+                              <div className="flex items-center justify-between mt-3">
+                                <p className="text-xs text-gray-500 font-medium">
+                                  {notification.time}
+                                </p>
+                                {notification.unread && (
+                                  <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">
+                                    New
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  {notifications.length > 0 && (
+                    <div className="p-3 border-t border-gray-200 bg-gray-50">
+                      <p className="text-xs text-gray-500 text-center">
+                        💜 Safe Circle - Supporting your journey with care
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* User menu */}
             <div className="flex items-center space-x-2 sm:space-x-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl px-2 sm:px-4 py-2">

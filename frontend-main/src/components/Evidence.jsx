@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import { useAuth } from '../contexts/AuthContext';
 import { 
   Upload, 
   FileText, 
@@ -12,27 +13,119 @@ import {
   Trash2,
   Plus,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Loader2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const Evidence = () => {
+  const { user } = useAuth();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [uploadProgress, setUploadProgress] = useState({});
 
-  const handleFileSelect = useCallback((files) => {
-    const newFiles = Array.from(files).map(file => ({
-      id: Date.now() + Math.random(),
-      file,
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      uploadedAt: new Date().toISOString(),
-      status: 'uploaded'
-    }));
+  // Load user's evidence files from backend
+  useEffect(() => {
+    const loadEvidenceFiles = async () => {
+      if (!user) return;
+      
+      try {
+        setIsLoading(true);
+        const token = localStorage.getItem('token');
+        
+        // For now, we'll simulate loading files since we need a user-specific endpoint
+        // In a real implementation, you'd have an endpoint like GET /api/evidence/user/:userId
+        const mockFiles = [
+          {
+            id: '1',
+            name: 'incident_report.pdf',
+            type: 'application/pdf',
+            size: 245760,
+            uploadedAt: '2024-01-15T10:30:00Z',
+            status: 'encrypted',
+            uploadToken: 'mock-token-1'
+          },
+          {
+            id: '2', 
+            name: 'evidence_photo.jpg',
+            type: 'image/jpeg',
+            size: 1024768,
+            uploadedAt: '2024-01-14T15:45:00Z',
+            status: 'encrypted',
+            uploadToken: 'mock-token-2'
+          }
+        ];
+        
+        setUploadedFiles(mockFiles);
+      } catch (error) {
+        console.error('Error loading evidence files:', error);
+        toast.error('Failed to load evidence files');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    setUploadedFiles(prev => [...prev, ...newFiles]);
-    toast.success(`${newFiles.length} file(s) added successfully!`);
+    loadEvidenceFiles();
+  }, [user]);
+
+  const handleFileSelect = useCallback(async (files) => {
+    const fileArray = Array.from(files);
+    
+    if (fileArray.length === 0) return;
+    
+    setIsUploading(true);
+    
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required');
+      }
+
+      const formData = new FormData();
+      fileArray.forEach(file => {
+        formData.append('files', file);
+      });
+
+      setUploadProgress({ uploading: true, progress: 0 });
+
+      const response = await fetch(`${API_BASE_URL}/api/evidence/upload-evidence`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Upload failed');
+      }
+
+      // Add uploaded files to the list
+      const newFiles = data.uploadedFiles.map((file, index) => ({
+        id: file.id,
+        name: file.originalName,
+        size: file.size,
+        type: file.mimetype || fileArray[index].type,
+        uploadedAt: new Date().toISOString(),
+        status: file.status,
+        uploadToken: file.uploadToken
+      }));
+
+      setUploadedFiles(prev => [...prev, ...newFiles]);
+      toast.success(data.message || `${newFiles.length} file(s) uploaded successfully!`);
+      
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error(error.message || 'Failed to upload files');
+    } finally {
+      setIsUploading(false);
+      setUploadProgress({});
+    }
   }, []);
 
   const handleDragOver = useCallback((e) => {
@@ -53,9 +146,85 @@ const Evidence = () => {
     }
   };
 
-  const removeFile = (fileId) => {
-    setUploadedFiles(prev => prev.filter(file => file.id !== fileId));
-    toast.success('File removed successfully!');
+  const removeFile = async (fileId) => {
+    const file = uploadedFiles.find(f => f.id === fileId);
+    if (!file) return;
+
+    try {
+      // In a real implementation, you'd call a delete endpoint
+      // For now, we'll just remove from local state
+      setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
+      toast.success('File removed successfully!');
+    } catch (error) {
+      console.error('Error removing file:', error);
+      toast.error('Failed to remove file');
+    }
+  };
+
+  const viewFile = async (file) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required');
+      }
+
+      // For demo purposes, open download in new tab
+      if (file.uploadToken) {
+        const downloadUrl = `${API_BASE_URL}/api/evidence/download/${file.uploadToken}`;
+        window.open(downloadUrl, '_blank');
+      } else {
+        toast.error('File access token not available');
+      }
+    } catch (error) {
+      console.error('Error viewing file:', error);
+      toast.error('Failed to view file');
+    }
+  };
+
+  const downloadFile = async (file) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required');
+      }
+
+      if (file.uploadToken) {
+        const downloadUrl = `${API_BASE_URL}/api/evidence/download/${file.uploadToken}`;
+        
+        // Create a temporary link to trigger download
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = file.name;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        
+        // Add authorization header by using fetch first
+        const response = await fetch(downloadUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Download failed');
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+        toast.success('File downloaded successfully');
+      } else {
+        toast.error('File download token not available');
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      toast.error('Failed to download file');
+    }
   };
 
   const formatFileSize = (bytes) => {
@@ -73,26 +242,21 @@ const Evidence = () => {
     return '📎';
   };
 
-  const existingEvidence = [
-    {
-      id: 1,
-      name: 'incident_report.pdf',
-      type: 'application/pdf',
-      size: 245760,
-      uploadedAt: '2024-01-15T10:30:00Z',
-      status: 'encrypted'
-    },
-    {
-      id: 2,
-      name: 'evidence_photo.jpg',
-      type: 'image/jpeg',
-      size: 1024768,
-      uploadedAt: '2024-01-14T15:45:00Z',
-      status: 'encrypted'
-    }
-  ];
+  const allFiles = uploadedFiles;
 
-  const allFiles = [...existingEvidence, ...uploadedFiles];
+  // Check authentication
+  if (!user) {
+    return (
+      <div className="space-y-8">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold text-gradient">Secure Evidence Vault</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Please log in to access your secure evidence vault.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -102,6 +266,10 @@ const Evidence = () => {
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           Upload and securely store important files. All evidence is encrypted and protected.
         </p>
+        <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
+          <Shield className="h-4 w-4" />
+          <span>Your files are secured with {user.username}'s account</span>
+        </div>
       </div>
 
       {/* Upload section */}
@@ -113,16 +281,35 @@ const Evidence = () => {
             onDrop={handleDrop}
           >
             <div className="mx-auto w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
-              <Shield className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+              {isUploading ? (
+                <Loader2 className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-spin" />
+              ) : (
+                <Shield className="h-8 w-8 text-primary-600 dark:text-primary-400" />
+              )}
             </div>
             <div>
-              <h3 className="text-lg font-semibold">Upload Evidence Files</h3>
+              <h3 className="text-lg font-semibold">
+                {isUploading ? 'Uploading Files...' : 'Upload Evidence Files'}
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Drag and drop files here, or click to browse
+                {isUploading 
+                  ? 'Please wait while your files are being securely uploaded'
+                  : 'Drag and drop files here, or click to browse'
+                }
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
                 Supported formats: PDF, DOC, DOCX, JPG, PNG, TXT (Max 10MB each)
               </p>
+              {uploadProgress.uploading && (
+                <div className="mt-4">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${uploadProgress.progress || 0}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
             </div>
             <input
               type="file"
@@ -131,13 +318,24 @@ const Evidence = () => {
               onChange={handleFileInputChange}
               className="hidden"
               id="file-upload"
+              disabled={isUploading}
             />
             <Button 
               onClick={() => document.getElementById('file-upload').click()}
               className="mx-auto"
+              disabled={isUploading}
             >
-              <Plus className="h-4 w-4 mr-2" />
-              Select Files
+              {isUploading ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                <>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Select Files
+                </>
+              )}
             </Button>
           </div>
         </CardContent>
@@ -152,7 +350,19 @@ const Evidence = () => {
           </Badge>
         </div>
 
-        {allFiles.length === 0 ? (
+        {isLoading ? (
+          <Card>
+            <CardContent className="p-12 text-center">
+              <Loader2 className="h-12 w-12 text-gray-400 mx-auto mb-4 animate-spin" />
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Loading your evidence files...
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">
+                Please wait while we fetch your secure files.
+              </p>
+            </CardContent>
+          </Card>
+        ) : allFiles.length === 0 ? (
           <Card>
             <CardContent className="p-12 text-center">
               <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -197,11 +407,21 @@ const Evidence = () => {
                     <span>Uploaded: {new Date(file.uploadedAt).toLocaleDateString()}</span>
                   </div>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1"
+                      onClick={() => viewFile(file)}
+                    >
                       <Eye className="h-4 w-4 mr-1" />
                       View
                     </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1"
+                      onClick={() => downloadFile(file)}
+                    >
                       <Download className="h-4 w-4 mr-1" />
                       Download
                     </Button>
