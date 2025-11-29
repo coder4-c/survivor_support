@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ========================================
 # SALAMA PROJECT - COMPREHENSIVE .GITIGNORE
 # ========================================
@@ -19,6 +18,9 @@
 config/secrets.json
 secrets.json
 secrets.js
+SECRETS.md
+SECURITY.md
+generate-secrets.js
 .secrets
 *.secret
 private-key.pem
@@ -68,19 +70,10 @@ database.sqlite
 # ========================================
 logs/
 logs/*.log
-=======
-# Created by https://www.toptal.com/developers/gitignore/api/node
-# Edit at https://www.toptal.com/developers/gitignore?templates=node
-
-### Node ###
-# Logs
-logs
->>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-<<<<<<< HEAD
 pnpm-debug.log*
 lerna-debug.log*
 *.trace
@@ -95,7 +88,7 @@ node_modules/
 
 # Build outputs
 dist/
-dist-ssr/
+dist-ssr
 build/
 build/
 .next/
@@ -108,9 +101,6 @@ out/
 .parcel-cache/
 .eslintcache
 .npm
-=======
-lerna-debug.log*
-.pnpm-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -147,26 +137,20 @@ build/Release
 node_modules/
 jspm_packages/
 
-# Snowpack dependency directory (https://snowpack.dev/)
+# Snowpack dependency directory (https://snowpack.dev)
 web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
 # Optional stylelint cache
 .stylelintcache
 
 # Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
+.rpt2_cache
+.rts2_cache_cjs
+.rts2_cache_es
+.rts2_cache_umd
 
 # Optional REPL history
 .node_repl_history
@@ -227,14 +211,12 @@ dist
 .vscode-test
 
 # yarn v2
->>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
 
-<<<<<<< HEAD
 # ========================================
 # FRONTEND SPECIFIC
 # ========================================
@@ -289,7 +271,7 @@ coverage/
 *.elc
 auto-save-list
 tramp
-.\#*
+.#*
 
 # ========================================
 # OPERATING SYSTEM FILES
@@ -402,13 +384,13 @@ owasp-zap/
 *.tar.bz2
 
 # ========================================
-# MISCELLANEOUS
+# SERVERLESS & MODERN JS
 # ========================================
-# Package managers
-.pnpm-debug.log*
-.npm
-.eslintcache
-.yarn-integrity
+# Serverless Webpack directories
+.webpack/
+
+# SvelteKit build / generate output
+.svelte-kit
 
 # ========================================
 # SECURITY NOTE
@@ -420,15 +402,3 @@ owasp-zap/
 # 3. No user data or evidence files are committed
 # 4. Secrets are properly managed and rotated regularly
 # 5. Use .env.example files to show required environment variables
-=======
-### Node Patch ###
-# Serverless Webpack directories
-.webpack/
-
-# Optional stylelint cache
-
-# SvelteKit build / generate output
-.svelte-kit
-
-# End of https://www.toptal.com/developers/gitignore/api/node
->>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
