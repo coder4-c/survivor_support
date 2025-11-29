@@ -2,6 +2,13 @@
 
 A comprehensive, secure web platform designed to support survivors of domestic violence and abuse. Salama ("peace" in Swahili) provides a safe digital space where users can securely store evidence, request support, access emergency resources, and connect with AI-powered assistance.
 
+## 🌟 Live Deployment
+**Production URL**: [https://survivor-support-1.onrender.com/](https://survivor-support-1.onrender.com/)
+
+## 📋 Project Information
+- **Project**: Group 50's Survivor Support Platform
+- **Pitch Deck**: [View Presentation](https://www.canva.com/design/DAG6D9gkEKg/lTORjPxnlj2cK4knWGW1MQ/edit)
+
 ## Development Team:
 Melvin Khakabo - Backend Development,  
 Jepchumba Kipruto - Frontend Development,  
