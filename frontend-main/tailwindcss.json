@@ -1,0 +1,50 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@tailwind",
+      "description": "Generate Tailwind's base, components, and utilities styles",
+      "reference": "https://tailwindcss.com/docs/functions-and-directives#tailwind"
+    },
+    {
+      "name": "@apply",
+      "description": "Apply Tailwind utility classes to CSS rules",
+      "reference": "https://tailwindcss.com/docs/functions-and-directives#apply"
+    },
+    {
+      "name": "@layer",
+      "description": "Group CSS rules into layers (base, components, utilities)",
+      "reference": "https://tailwindcss.com/docs/functions-and-directives#layer"
+    },
+    {
+      "name": "@variants",
+      "description": "Generate variants for utility classes (responsive, hover, focus)",
+      "reference": "https://tailwindcss.com/docs/functions-and-directives#variants"
+    },
+    {
+      "name": "@responsive",
+      "description": "Generate responsive variants for utility classes",
+      "reference": "https://tailwindcss.com/docs/functions-and-directives#responsive"
+    }
+  ],
+  "classes": [],
+  "pseudoClasses": [
+    {
+      "name": "hover",
+      "description": "Matches when the user hovers over an element"
+    },
+    {
+      "name": "focus",
+      "description": "Matches when an element has focus"
+    },
+    {
+      "name": "active",
+      "description": "Matches when an element is active"
+    },
+    {
+      "name": "focus-visible",
+      "description": "Matches when an element has focus and the user tabs to it"
+    }
+  ],
+  "pseudoElements": []
+}
