@@ -225,7 +225,6 @@ const Navbar = () => {
     { name: 'Dashboard', href: '/', icon: Home },
     { name: 'Support', href: '/support', icon: Users },
     { name: 'Evidence', href: '/evidence', icon: FileText },
-    { name: 'AI Chat', href: '/chat', icon: MessageCircle },
     { name: 'Emergency', href: '/emergency', icon: AlertTriangle },
   ];
 

@@ -386,6 +386,70 @@ const Dashboard = () => {
         </Card>
       </div>
 
+      {/* About Us Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6 sm:pb-8">
+        <Card className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-purple-200">
+          <CardContent className="p-6 sm:p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+                About Salama 💜
+              </h2>
+              <p className="text-gray-600 text-base sm:text-lg max-w-3xl mx-auto">
+                Salama is a secure support platform dedicated to providing compassionate assistance to those who need it most. 
+                We understand that reaching out for help takes courage, and we're here to support you every step of your journey.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="text-center">
+                <div className="mx-auto p-4 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl w-16 h-16 flex items-center justify-center mb-4">
+                  <Shield className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Privacy & Security</h3>
+                <p className="text-gray-600 text-sm">
+                  Your information is protected with enterprise-grade security and strict privacy protocols.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="mx-auto p-4 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl w-16 h-16 flex items-center justify-center mb-4">
+                  <Users className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Professional Support</h3>
+                <p className="text-gray-600 text-sm">
+                  Our trained counselors and support staff are available 24/7 to provide assistance.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="mx-auto p-4 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl w-16 h-16 flex items-center justify-center mb-4">
+                  <Heart className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Compassionate Care</h3>
+                <p className="text-gray-600 text-sm">
+                  We approach every situation with empathy, understanding, and non-judgmental support.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-8 p-6 bg-white rounded-2xl shadow-lg">
+              <div className="text-center">
+                <h4 className="font-bold text-gray-900 mb-3 text-lg">Our Mission</h4>
+                <p className="text-gray-600 italic">
+                  "To create a safe, secure, and supportive environment where everyone can access the help they need 
+                  without fear or hesitation. At Salama, your wellbeing and dignity come first."
+                </p>
+                <div className="mt-4 flex items-center justify-center space-x-2 text-purple-600">
+                  <Star className="h-4 w-4" />
+                  <span className="text-sm font-medium">Trusted by thousands worldwide</span>
+                  <Star className="h-4 w-4" />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Footer with Salama branding */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
         <div className="text-center">

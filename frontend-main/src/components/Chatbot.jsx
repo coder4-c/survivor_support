@@ -96,9 +96,9 @@ export function Chatbot() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           onClick={() => setIsOpen(true)}
-          className="w-14 h-14 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-white hover:scale-110"
+          className="w-12 h-12 bg-blue-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-white hover:scale-110"
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-5 w-5" />
         </motion.button>
       )}
 
@@ -109,7 +109,7 @@ export function Chatbot() {
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="relative w-80 md:w-80 h-96 overflow-hidden rounded-lg border bg-background shadow-xl"
+            className="relative w-72 md:w-72 h-80 overflow-hidden rounded-lg border bg-blue-600 shadow-xl"
           >
             <div className="relative flex flex-col h-full">
               <AnimatePresence>
@@ -136,21 +136,19 @@ export function Chatbot() {
               
               <div className="z-20 flex flex-col h-full">
                 {/* Header */}
-                <div className="p-3 border-b bg-background/90 backdrop-blur-sm flex items-center justify-between">
+                <div className="p-3 border-b border-blue-500 bg-blue-600 flex items-center justify-between">
                   <div>
-                    <h1 className="text-sm font-bold">
-                      <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                        AI Assistant
-                      </span>
+                    <h1 className="text-sm font-bold text-white">
+                      AI Assistant
                     </h1>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-blue-100">
                       How can I help you?
                     </p>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8"
+                    className="h-8 w-8 text-white hover:bg-blue-500"
                     onClick={() => setIsOpen(false)}
                   >
                     <X className="h-4 w-4" />
@@ -159,10 +157,10 @@ export function Chatbot() {
                 </div>
 
                 {/* Messages */}
-                <ScrollArea className="flex-1 p-2" ref={scrollRef}>
+                <ScrollArea className="flex-1 p-2 bg-blue-700" ref={scrollRef}>
                   <div className="space-y-2 px-2">
                     {messages.length === 0 ? (
-                      <div className="text-center text-muted-foreground py-6 text-xs">
+                      <div className="text-center text-blue-100 py-6 text-xs">
                         👋 Hi! Ask me anything...
                       </div>
                     ) : (
@@ -178,8 +176,8 @@ export function Chatbot() {
                             className={cn(
                               "max-w-[85%] rounded-lg px-2 py-1 text-xs",
                               message.type === "user"
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-muted text-foreground"
+                                ? "bg-white text-blue-600"
+                                : "bg-blue-800 text-white"
                             )}
                           >
                             <p className="text-xs leading-tight">{message.text}</p>
@@ -192,11 +190,11 @@ export function Chatbot() {
                     )}
                     {loading && (
                       <div className="flex justify-start">
-                        <div className="bg-muted text-foreground max-w-[85%] rounded-lg px-2 py-1">
+                        <div className="bg-blue-800 text-white max-w-[85%] rounded-lg px-2 py-1">
                           <div className="flex space-x-1">
-                            <div className="w-1 h-1 bg-current rounded-full animate-bounce"></div>
-                            <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                            <div className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                            <div className="w-1 h-1 bg-white rounded-full animate-bounce"></div>
+                            <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                            <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                           </div>
                         </div>
                       </div>
@@ -205,11 +203,11 @@ export function Chatbot() {
                 </ScrollArea>
 
                 {/* Input */}
-                <div className="p-2 border-t bg-background/90 backdrop-blur-sm">
+                <div className="p-2 border-t border-blue-500 bg-blue-600">
                   <form onSubmit={sendMessage}>
                     <div className="relative">
                       <Input
-                        className="pl-8 pr-8 text-xs h-8"
+                        className="pl-8 pr-8 text-xs h-8 bg-white text-blue-600 placeholder:text-blue-400"
                         placeholder="Type your message..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -220,7 +218,7 @@ export function Chatbot() {
                         type="submit"
                         variant="ghost"
                         size="icon"
-                        className="absolute right-0.5 top-0.5 h-7 w-7 rounded-sm"
+                        className="absolute right-0.5 top-0.5 h-7 w-7 rounded-sm text-white hover:bg-blue-500"
                         onClick={sendMessage}
                         disabled={loading || !input.trim()}
                       >
