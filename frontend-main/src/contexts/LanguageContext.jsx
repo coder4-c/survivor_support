@@ -83,11 +83,7 @@ const translations = {
     networkError: 'Network error. Please check your connection.',
     
     // App title
-<<<<<<< HEAD
-    appTitle: 'Salama',
-=======
     appTitle: 'Safe Circle',
->>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
     appSubtitle: 'Community Safety Platform'
   },
   sw: {
