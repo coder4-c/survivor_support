@@ -7,7 +7,11 @@ const SimpleDashboard = () => (
   <div className="min-h-screen bg-gray-50 p-8">
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
+<<<<<<< HEAD
         <h1 className="text-4xl font-bold text-blue-600 mb-4">Salama Dashboard</h1>
+=======
+        <h1 className="text-4xl font-bold text-blue-600 mb-4">Safe Circle Dashboard</h1>
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
         <p className="text-gray-600">Welcome to your secure support platform!</p>
       </div>
       
@@ -57,7 +61,11 @@ const App = () => {
               <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                   <h1 className="text-4xl font-bold text-blue-600 mb-2">
+<<<<<<< HEAD
                     Salama
+=======
+                    Safe Circle
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
                   </h1>
                   <p className="text-gray-600">
                     Secure support platform for survivors

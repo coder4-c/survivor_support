@@ -10,6 +10,10 @@ import Emergency from './components/Emergency';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Preferences from './components/Preferences';
+<<<<<<< HEAD
+=======
+import { Chatbot } from './components/Chatbot';
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
 import { Button } from './components/ui/button';
 
 // Login/Signup Form Component
@@ -203,6 +207,10 @@ const AuthForm = () => {
                       id="username"
                       name="username"
                       type="text"
+<<<<<<< HEAD
+=======
+                      autoComplete="username"
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
                       value={formData.username}
                       onChange={handleInputChange}
                       className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${
@@ -399,6 +407,14 @@ const AppContent = () => {
                 <Emergency />
               </ProtectedRoute>
             } />
+<<<<<<< HEAD
+=======
+            <Route path="/chat" element={
+              <ProtectedRoute>
+                <Chatbot />
+              </ProtectedRoute>
+            } />
+>>>>>>> 5cb7af70c22c640faf70e8226d5ccf889f3e197a
           </Routes>
         </div>
       ) : (

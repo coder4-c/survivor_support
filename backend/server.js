@@ -10,6 +10,7 @@ require('dotenv').config();
 const supportRoutes = require('./routes/support');
 const evidenceRoutes = require('./routes/evidence');
 const authRoutes = require('./routes/auth');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -79,7 +80,8 @@ app.get('/', (req, res) => {
       health: '/',
       support: '/api/support',
       evidence: '/api/evidence',
-      auth: '/api/auth'
+      auth: '/api/auth',
+      ai: '/api/ai'
     }
   });
 });
@@ -88,6 +90,7 @@ app.get('/', (req, res) => {
 app.use('/api/support', supportRoutes);
 app.use('/api/evidence', evidenceRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/ai', aiRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
