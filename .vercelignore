@@ -1,0 +1,7 @@
+# Prevent Vercel from auto-deploying this repository
+.vercelignore
+node_modules/
+.env
+.env.local
+*.log
+.DS_Store
