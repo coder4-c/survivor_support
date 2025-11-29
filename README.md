@@ -3,7 +3,8 @@
 A comprehensive, secure web platform designed to support survivors of domestic violence and abuse. Salama ("peace" in Swahili) provides a safe digital space where users can securely store evidence, request support, access emergency resources, and connect with AI-powered assistance.
 
 ## Development Team:
-Melvin Khakabo - Backend Development,  
+Melvin Khakabo - Backend Development,
+
 Marion Kipruto - Frontend Development,  
 
 Lauryn Mwendwa- Data Science, 
