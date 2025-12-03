@@ -1,6 +1,4 @@
 {
-  "buildCommand": "cd frontend-main && npm install && npm run build",
-  "outputDirectory": "frontend-main/dist",
   "functions": {
     "api/index.js": {
       "runtime": "@vercel/node@3.0.0"
