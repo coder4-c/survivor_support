@@ -3,14 +3,14 @@
   "outputDirectory": "frontend-main/dist",
   "installCommand": "npm install && cd frontend-main && npm install",
   "functions": {
-    "api/**/*.js": {
+    "api/index.js": {
       "runtime": "@vercel/node@3.0.0"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "destination": "/api/index.js"
     },
     {
       "source": "/(.*)",
