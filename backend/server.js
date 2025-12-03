@@ -43,6 +43,7 @@ const corsOptions = {
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5174',
     'https://survivor-support-1.onrender.com',
+    'https://survivor-support2-jj59zeed6-marions-projects-7f4d8e25.vercel.app',
     process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true,
