@@ -107,14 +107,31 @@ const Emergency = () => {
     }
   };
 
+  const handleText = (textCommand) => {
+    if (confirm(`This will open your SMS app with the message "${textCommand}". Continue?`)) {
+      const encodedMessage = encodeURIComponent(textCommand);
+      window.location.href = `sms:?&body=${encodedMessage}`;
+      toast.success(`Opening SMS with message: ${textCommand}`);
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success(`Copied: ${text}`);
+    }).catch(() => {
+      toast.error('Failed to copy to clipboard');
+    });
+  };
+
   const handleSafeHouse = () => {
     toast.success('Connecting you with safe housing resources...');
     // In a real app, this would navigate to a safe house finder
   };
 
   const handleLiveChat = () => {
-    toast.success('Starting secure chat session...');
-    // In a real app, this would open a secure chat
+    // Connect to Crisis Text Line for live chat support
+    handleText('HOME');
+    toast.success('Connecting you with Crisis Text Line...');
   };
 
   const handleLegalEmergency = () => {
@@ -187,9 +204,19 @@ const Emergency = () => {
                   className={`w-full ${
                     action.color === 'emergency' ? 'shadow-glow-emergency' : ''
                   }`}
+                  onClick={action.action}
                 >
-                  <Phone className="h-4 w-4 mr-2" />
-                  Get Help Now
+                  {action.title === 'Live Crisis Chat' ? (
+                    <>
+                      <MessageCircle className="h-4 w-4 mr-2" />
+                      Text Now
+                    </>
+                  ) : (
+                    <>
+                      <Phone className="h-4 w-4 mr-2" />
+                      Get Help Now
+                    </>
+                  )}
                 </Button>
               </CardContent>
             </Card>
@@ -226,14 +253,25 @@ const Emergency = () => {
                     </span>
                   </div>
                 </div>
-                <Button 
-                  variant={contact.color === 'emergency' ? 'emergency' : 'default'}
-                  className="w-full"
-                  onClick={() => handleCall(contact.number.replace(/\D/g, ''))}
-                >
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call Now
-                </Button>
+                {contact.title === 'Crisis Text Line' ? (
+                  <Button 
+                    variant={contact.color === 'emergency' ? 'emergency' : 'default'}
+                    className="w-full"
+                    onClick={() => handleText('HOME')}
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Text Now
+                  </Button>
+                ) : (
+                  <Button 
+                    variant={contact.color === 'emergency' ? 'emergency' : 'default'}
+                    className="w-full"
+                    onClick={() => handleCall(contact.number.replace(/\D/g, ''))}
+                  >
+                    <Phone className="h-4 w-4 mr-2" />
+                    Call Now
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
