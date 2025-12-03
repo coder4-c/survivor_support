@@ -37,8 +37,8 @@ const evidenceSchema = new mongoose.Schema({
   },
   encryptionKey: {
     type: String,
-    required: true,
-    trim: true
+    trim: true,
+    default: () => crypto.randomBytes(32).toString('hex')
   },
   uploadToken: {
     type: String,
