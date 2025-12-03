@@ -1,4 +1,7 @@
 {
+  "buildCommand": "cd frontend-main && npm install && npm run build",
+  "outputDirectory": "frontend-main/dist",
+  "installCommand": "npm install && cd frontend-main && npm install",
   "functions": {
     "api/**/*.js": {
       "runtime": "@vercel/node@3.0.0"
@@ -11,7 +14,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend-main/dist/$1"
+      "dest": "/frontend-main/dist/index.html"
     }
   ],
   "env": {
