@@ -19,6 +19,10 @@ import toast from 'react-hot-toast';
 
 const Emergency = () => {
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
+  const [showSafeHouseModal, setShowSafeHouseModal] = useState(false);
+  const [showLiveChatModal, setShowLiveChatModal] = useState(false);
+  const [showLegalModal, setShowLegalModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const emergencyContacts = [
     {
