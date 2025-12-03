@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -14,7 +14,8 @@ import {
   Plus,
   AlertTriangle,
   CheckCircle,
-  Loader2
+  Loader2,
+  Bell
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -26,6 +27,10 @@ const Evidence = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [uploadProgress, setUploadProgress] = useState({});
+  const [showUploadNotification, setShowUploadNotification] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [previousFileCount, setPreviousFileCount] = useState(0);
+  const notificationTimeoutRef = useRef(null);
 
   // Load user's evidence files from backend
   useEffect(() => {
@@ -64,6 +69,15 @@ const Evidence = () => {
 
     loadEvidenceFiles();
   }, [user]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleFileSelect = useCallback(async (files) => {
     const fileArray = Array.from(files);
@@ -110,8 +124,36 @@ const Evidence = () => {
         uploadToken: file.uploadToken
       }));
 
-      setUploadedFiles(prev => [...prev, ...newFiles]);
-      toast.success(data.message || `${newFiles.length} file(s) uploaded successfully!`);
+      setUploadedFiles(prev => {
+        const updatedFiles = [...prev, ...newFiles];
+        // Update previous count for animation
+        setPreviousFileCount(prev.length);
+        return updatedFiles;
+      });
+      
+      // Trigger upload notification
+      const fileCount = [...uploadedFiles, ...newFiles].length;
+      setNotificationCount(fileCount);
+      setShowUploadNotification(true);
+      
+      // Clear any existing timeout
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current);
+      }
+      
+      // Set timeout to hide notification after 3 seconds
+      notificationTimeoutRef.current = setTimeout(() => {
+        setShowUploadNotification(false);
+      }, 3000);
+      
+      // Show success toast with more detailed message
+      const successMessage = data.message || 
+        `${newFiles.length} file${newFiles.length !== 1 ? 's' : ''} uploaded successfully! ` +
+        `Total files: ${fileCount}`;
+      toast.success(successMessage, {
+        duration: 4000,
+        icon: '🎉'
+      });
       
     } catch (error) {
       console.error('Upload error:', error);
@@ -267,6 +309,40 @@ const Evidence = () => {
         </div>
       </div>
 
+      {/* Upload Notification */}
+      {showUploadNotification && (
+        <div className="fixed top-4 right-4 z-50 animate-slide-in-right">
+          <Card className="bg-green-50 dark:bg-green-900 border-green-200 dark:border-green-800 shadow-lg">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  <div className="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold animate-bounce">
+                    {notificationCount}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-green-800 dark:text-green-200 text-sm">
+                    Files Uploaded Successfully!
+                  </h3>
+                  <p className="text-xs text-green-700 dark:text-green-300">
+                    You now have {notificationCount} file{notificationCount !== 1 ? 's' : ''} in your secure vault
+                  </p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowUploadNotification(false)}
+                  className="text-green-600 hover:text-green-800 p-1"
+                >
+                  ×
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {/* Upload section */}
       <Card className="border-2 border-dashed border-primary-300 dark:border-primary-700">
         <CardContent className="p-8">
@@ -340,7 +416,15 @@ const Evidence = () => {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold">Your Evidence Files</h2>
-          <Badge variant="secondary">
+          <Badge 
+            variant="secondary" 
+            className={`transition-all duration-500 transform ${
+              allFiles.length > previousFileCount 
+                ? 'scale-110 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' 
+                : ''
+            }`}
+          >
+            <Bell className="h-3 w-3 mr-1" />
             {allFiles.length} file{allFiles.length !== 1 ? 's' : ''}
           </Badge>
         </div>
